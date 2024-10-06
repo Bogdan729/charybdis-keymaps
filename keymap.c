@@ -14,7 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include QMK_KEYBOARD_H
+
+// #include "keymap_russian.h"
+// #include "keymap_us_international.h"
+// #include "sendstring_us_international.h"
+// #include "keymap_uk.h"
+// #include "sendstring_uk.h"
 
 enum charybdis_keymap_layers {
     LAYER_BASE = 0,
@@ -27,10 +34,6 @@ enum charybdis_keymap_layers {
 };
 
 // функция tab dance https://docs.qmk.fm/features/tap_dance#example-4
-
-enum {
-    TD_ESC_CAPS, // не используется
-};
 
 enum {
     TD_L_LANG = 0,
@@ -47,6 +50,16 @@ enum custom_keycodes {
     M_DOPLICATE_PAGE,
     M_COPY_PAGE_URL
 };
+
+enum unicode_names {
+  U_QUEST_SYM,
+};
+
+const uint32_t unicode_map[] PROGMEM = {
+  [U_QUEST_SYM]   = 0x003f,  // ?
+};
+
+#define U_QUEST UM(U_QUEST_SYM)
 
 /** \brief Automatically enable sniping-mode on the pointer layer. */
 #define CHARYBDIS_AUTO_SNIPING_ON_LAYER LAYER_POINTER
@@ -90,7 +103,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├───────────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        SC_LCPO,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,          KC_N,  KC_M, KC_COMM,  KC_DOT, ALT_T(KC_SLSH), KC_RBRC,
   // ╰───────────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-               LWIN_T(KC_BSPC),  LT(LAYER_SYM, KC_SPC), MO(LOWER),   LT(RAISE, KC_TAB),  LT(MEDIA, KC_ENT)                                                                                                                
+            LWIN_T(KC_BSPC),  LT(LAYER_SYM, KC_SPC), MO(LOWER),   LT(RAISE, KC_TAB),  LT(FUN, KC_ENT)
   //          ╰──────────────────────────────────────────────────╯ ╰───────────────────────────╯
   ),
 
@@ -114,7 +127,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_LCTL, KC_HOME, KC_PGUP, KC_PGDN,  KC_END, XXXXXXX,    SC_NWIN, KC_TAB,  KC_LCTL, KC_LSFT, KC_LALT, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                                  _______, XXXXXXX, FUN,    _______, XXXXXXX
+                                  _______, MEDIA, FUN,          _______, XXXXXXX
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -136,7 +149,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_EXLM, KC_LCBR, KC_AMPR, KC_PIPE, KC_RCBR, KC_COLN,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_QUES, KC_LPRN, KC_LT, KC_GT, KC_RPRN, KC_UNDS,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+       KC_QUES, KC_LPRN, KC_LT, KC_GT, KC_RPRN, KC_UNDS,       U_QUEST, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX
   //                            ╰───────────────────────────╯ ╰──────────────────╯
@@ -173,8 +186,6 @@ const uint16_t PROGMEM CB_PRINT_SCREEN[] = {KC_S, KC_D, COMBO_END};
 const uint16_t PROGMEM CB_PASTE_WITHOUT_FROMATTING[] = {KC_X, KC_C, COMBO_END};
 const uint16_t PROGMEM CB_HIGLIGHT_ALL[] = {KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM CB_CAPS_WORD[] = {KC_C, KC_V, COMBO_END};
-// const uint16_t PROGMEM CB_LAYER_FUN[] = {MO(LAYER_LOWER), LT(RAISE, KC_TAB), COMBO_END};
-// const uint16_t PROGMEM CB_LAYER_MEDIA[] = {LT(LAYER_SYM, KC_SPC), LT(RAISE, KC_TAB), COMBO_END};
 const uint16_t PROGMEM CB_STOP_TRACK[] = {KC_MPRV, KC_MNXT, COMBO_END};
 const uint16_t PROGMEM CB_COMMA[] = {KC_N, KC_M, COMBO_END};
 const uint16_t PROGMEM CB_DOT[] = {KC_M, KC_COMMA, COMBO_END};
@@ -185,8 +196,6 @@ combo_t key_combos[] = {
     COMBO(CB_PASTE_WITHOUT_FROMATTING, M_CTRL_SHIFT_V), // keycodes with modifiers are possible too!
     COMBO(CB_HIGLIGHT_ALL, M_HIGLIGHT_ALL),
     COMBO(CB_CAPS_WORD, CW_TOGG),
-    // COMBO(CB_LAYER_FUN, MO(LAYER_FUN)),
-    // COMBO(CB_LAYER_MEDIA, MO(LAYER_MEDIA)),
     COMBO(CB_STOP_TRACK, KC_MPLY),
     COMBO(CB_COMMA, M_SEND_COMMA),
     COMBO(CB_DOT, KC_DOT),
@@ -224,25 +233,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case M_CTRL_SHIFT_V:
             if (record->event.pressed) {
-                // Когда клавиша нажата
-                register_code(KC_LCTL); // Нажать Ctrl
-                register_code(KC_LSFT); // Нажать Shift
-                register_code(KC_V);    // Нажать V
+                register_code(KC_LCTL);
+                register_code(KC_LSFT);
+                register_code(KC_V);
             } else {
-                // Когда клавиша отпущена
-                unregister_code(KC_V);    // Отпустить V
-                unregister_code(KC_LSFT); // Отпустить Shift
-                unregister_code(KC_LCTL); // Отпустить Ctrl
+                unregister_code(KC_V);
+                unregister_code(KC_LSFT);
+                unregister_code(KC_LCTL);
             }
             break;
         case M_W_SHIFT_S:
             if (record->event.pressed) {
-                // Когда клавиша нажата
                 register_code(KC_LWIN);
                 register_code(KC_LSFT);
                 register_code(KC_S);   
             } else {
-                // Когда клавиша отпущена
                 unregister_code(KC_LWIN);
                 unregister_code(KC_LSFT);
                 unregister_code(KC_S);
@@ -288,7 +293,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;                    
     }
-    return true; // Продолжить обработку других keycodes
+    return true;
 }
 
 //////////////// END CUSTOM ////////////////

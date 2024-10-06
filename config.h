@@ -40,7 +40,7 @@
 #define AUTO_SHIFT_TIMEOUT 150 // https://docs.qmk.fm/features/auto_shift
 #define NO_AUTO_SHIFT_TAB 
 
-#define CHARYBDIS_MINIMUM_DEFAULT_DPI 800
+#define CHARYBDIS_MINIMUM_DEFAULT_DPI 650
 
 #define ONESHOT_TAP_TOGGLE 2  /* Tapping this number of times holds the key until tapped once again. */
 #define ONESHOT_TIMEOUT 3000  /* Time (in ms) before the one shot key is released */
@@ -48,3 +48,6 @@
 #define TAPPING_TOGGLE 2
 
 #define MOUSEKEY_WHEEL_MAX_SPEED 1
+
+#define UNICODE_KEY_WINC KC_RIGHT_ALT
+#define UNICODE_SELECTED_MODES UNICODE_MODE_WINCOMPOSE
